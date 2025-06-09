@@ -1,22 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>单词乐园 - 趣味学英语</title>
+    <meta name="description" content="单词乐园是一个通过趣味消消乐方式轻松学习英语单词的应用。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="deco-cloud cloud-1"></div>
+    <div class="deco-cloud cloud-2"></div>
+    <div class="deco-cloud cloud-3"></div>
+    <div class="deco-star star-1"></div>
+    <div class="deco-star star-2"></div>
 
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
+    <div class="container">
+        <div class="panel main-panel">
+            <div class="welcome-header">
+                <h1>单词乐园</h1>
+                <div class="subtitle">趣味消消乐 · 轻松学英语</div>
+            </div>
 
-            <form class="row" id="greet-form">
-                <input id="greet-input" placeholder="Enter a name..." />
-                <button type="submit">Greet</button>
-            </form>
-            <p id="greet-msg"></p>
-        </main>
-    </body>
+            <div id="initial-guidance" class="initial-guidance">
+                <p>📚 请选择学习阶段开始，或通过下方按钮加载您自己的TXT单词文件！</p>
+            </div>
+
+            <div id="db-loading-indicator" class="db-loading-indicator" style="display:none;">
+                <p>⏳ 词库加载中，请稍候...</p>
+            </div>
+
+            <div class="selector-row">
+                <div class="selector-box" id="stage-selector">
+                    <div class="selector-label" aria-label="选择学习阶段">选择学习阶段</div>
+                    <div class="selector-options">
+                        <div class="selector-option" onClick="selectStage('primary', '小学')">小学</div>
+                        <div class="selector-option" onClick="selectStage('junior', '初中')">初中</div>
+                        <div class="selector-option" onClick="selectStage('senior', '高中')">高中</div>
+                    </div>
+                </div>
+                <div class="selector-box" id="grade-selector">
+                    <div class="selector-label" aria-label="选择年级">选择年级</div>
+                    <div class="selector-options" id="grade-options">
+                        </div>
+                </div>
+                <div class="selector-box" id="semester-selector">
+                    <div class="selector-label" aria-label="选择学期">选择学期</div>
+                    <div class="selector-options">
+                        <div class="selector-option" onClick="selectSemester('1', '上学期')">上学期</div>
+                        <div class="selector-option" onClick="selectSemester('2', '下学期')">下学期</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="file-upload-title">或者</div>
+            <div class="file-upload-row">
+                <input type="file" id="file-input" accept=".txt" style="display: none;" onchange="handleFileSelectedForGame()">
+
+                <button class="btn btn-start-game-load-words" onclick="attemptStartOrLoadGame()" aria-label="开始游戏或加载词库">🚀 开始游戏 / 加载词库</button>
+
+                <div class="file-format-info">
+                    <div>📝 文件格式说明</div>
+                    <div>每行一个单词</div>
+                    <div>英文在前，中文在后</div>
+                    <div>用空格或逗号分隔</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="import-progress"></div>
+                </div>
+            </div>
+
+            <div class="mistake-section">
+                <button class="btn" onclick="showMistakeBook()" aria-label="查看错题本">📖 查看错题本</button>
+                <button class="btn" id="webdav-settings-button" onclick="openWebDAVSettingsModal()" aria-label="同步设置">⚙️ 同步与备份</button>
+            </div>
+        </div>
+
+        <div id="difficulty-container" class="panel game-panel" style="display: none;">
+            <h2>🎮 选择难度级别</h2>
+            <div class="difficulty-buttons">
+                <button class="btn difficulty-btn easy" onclick="startGame('easy')" aria-label="简单难度">😊 简单</button>
+                <button class="btn difficulty-btn medium" onclick="startGame('medium')" aria-label="中等难度">😎 中等</button>
+                <button class="btn difficulty-btn hard" onclick="startGame('hard')" aria-label="困难难度">🔥 困难</button>
+            </div>
+             <button class="btn btn-secondary" onclick="showMainPanel()" aria-label="返回主菜单">⏪ 返回主菜单</button>
+        </div>
+
+        <div id="game-interface" style="display: none;">
+            <div id="game-controls">
+                <button id="pause-button" class="btn control-btn" onclick="togglePauseGame()" aria-label="暂停游戏">❚❚ 暂停</button>
+                <button id="sound-button" class="btn control-btn sound-on" onclick="toggleSound()" aria-label="切换声音">🔊</button>
+            </div>
+            <div id="game-container">
+                <div id="game-progress">📊 进度: 0/0</div>
+                <div id="score">⭐ 分数: 100</div>
+                 <div id="pause-overlay" style="display: none;">
+                    <p>游戏已暂停</p>
+                    <button class="btn" onclick="togglePauseGame()">▶️ 继续游戏</button>
+                </div>
+            </div>
+
+            <div id="input-container">
+                <input type="text" id="answer" placeholder="🖊️ 输入对应的英文单词" disabled>
+                <button class="btn" onclick="checkAnswer()" aria-label="提交答案">🚀 提交</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+
+    <div id="mistake-modal" class="modal">
+        <div class="modal-content">
+            <h3>我的错题本 📚</h3>
+            <div id="mistake-list-container">
+                 <div id="mistake-list"></div>
+            </div>
+            <div class="mistake-modal-actions">
+                <button class="btn btn-practice-mistakes" onclick="practiceMistakes()" aria-label="练习错题本中的单词">✍️ 错题练习</button>
+                <button class="btn btn-clear-mistakes" onclick="clearMistakeBook()" aria-label="清空错题本">🗑️ 清空错题本</button>
+                <button class="btn btn-secondary" onclick="closeModal('mistake-modal')" aria-label="关闭错题本">❌ 关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="webdav-settings-modal" class="modal">
+        <div class="modal-content">
+            <h3>WebDAV 同步与备份设置 ⚙️</h3>
+            <div id="webdav-form">
+                <div class="form-group">
+                    <label for="webdav-url">服务器 URL:</label>
+                    <input type="url" id="webdav-url" placeholder="例如: https://example.com/webdav/">
+                </div>
+                <div class="form-group">
+                    <label for="webdav-username">用户名:</label>
+                    <input type="text" id="webdav-username">
+                </div>
+                <div class="form-group">
+                    <label for="webdav-password">密码:</label>
+                    <input type="password" id="webdav-password">
+                </div>
+                <div class="form-group">
+                    <label for="webdav-path">远程路径 (可选):</label>
+                    <input type="text" id="webdav-path" placeholder="例如: apps/wordparadise/">
+                </div>
+            </div>
+
+            <div class="form-group sync-options-group" style="margin-top: 15px; text-align: left; border: 1px solid #eee; padding:10px; border-radius: 5px;">
+                <strong style="display: block; margin-bottom: 8px;">备份/恢复选项:</strong>
+                <div>
+                    <input type="checkbox" id="sync-mistake-book-checkbox" checked>
+                    <label for="sync-mistake-book-checkbox">备份时: 包括错题本</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="sync-user-words-checkbox" checked>
+                    <label for="sync-user-words-checkbox">备份时: 包括用户自定义词库 (TXT导入或之前云端恢复的)</label>
+                </div>
+                <hr style="margin: 10px 0;">
+                <div>
+                    <input type="checkbox" id="apply-mistake-book-checkbox" checked>
+                    <label for="apply-mistake-book-checkbox">恢复时: 应用错题本</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="apply-user-words-checkbox" checked>
+                    <label for="apply-user-words-checkbox">恢复时: 应用用户词库</label>
+                </div>
+            </div>
+
+            <div id="webdav-status" style="margin-top: 10px; font-size: 0.9em; min-height: 2.4em; line-height: 1.2em; text-align: center;"></div>
+
+            <div class="webdav-actions-basic" style="margin-top:15px; display:flex; justify-content:space-around; flex-wrap:wrap; gap:8px;">
+                <button class="btn" onclick="saveWebDAVSettings()" aria-label="保存设置">💾 保存设置</button>
+                <button class="btn btn-info" onclick="testWebDAVConnection()" aria-label="测试连接">🧪 测试连接</button>
+            </div>
+
+            <hr style="margin: 15px 0;">
+
+            <h4>云端备份管理:</h4>
+            <div id="webdav-backup-list" style="max-height: 150px; min-height: 80px;overflow-y: auto; border: 1px solid #eee; padding: 10px; margin-bottom: 10px; text-align:left; background-color: #f9f9f9; border-radius: 5px;">
+                <p>点击“保存设置”并成功“测试连接”后将显示备份列表。</p>
+            </div>
+
+            <div class="webdav-modal-actions" style="margin-top: 10px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px;">
+                <button class="btn btn-success" onclick="handleCreateBackup()" aria-label="创建新备份">📤 创建新备份</button>
+                <button class="btn btn-primary" id="webdav-restore-button" onclick="restoreFromSelectedBackup()" aria-label="恢复选中备份" disabled>📥 恢复选中</button>
+                <button class="btn btn-danger" id="webdav-delete-backup-button" onclick="deleteSpecificBackup()" aria-label="删除选中备份" disabled>🗑️ 删除选中</button>
+                <button class="btn btn-secondary" onclick="closeModal('webdav-settings-modal')" aria-label="关闭">❌ 关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="correct-sound" src="sounds/correct.mp3" preload="auto"></audio>
+    <audio id="incorrect-sound" src="sounds/incorrect.mp3" preload="auto"></audio>
+    <audio id="combo-sound" src="sounds/combo.mp3" preload="auto"></audio>
+    <audio id="gameover-sound" src="sounds/gameover.mp3" preload="auto"></audio>
+    <audio id="word-missed-sound" src="sounds/word_missed.mp3" preload="auto"></audio>
+    <audio id="button-click-sound" src="sounds/button_click.mp3" preload="auto"></audio>
+
+ 
+    <script src="app.js"></script>
+    <script src="webdav-sync.js"></script>
+</body>
 </html>
