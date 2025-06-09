@@ -1,112 +1,1231 @@
-.logo.vanilla:hover {
-    filter: drop-shadow(0 0 2em #ffe21c);
-}
 :root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
+    --primary-color: #FF6B6B; /* 主色调 - 活泼的红色 */
+    --primary-color-rgb: 255, 107, 107;
+    --secondary-color: #4ECDC4; /* 次色调 - 清新的青色 */
+    --secondary-color-rgb: 78, 205, 196;
+    --accent-color: #FFE66D; /* 强调色 - 明亮的黄色 */
+    --accent-color-rgb: 255, 230, 109;
+    --dark-color: #2D3436; /* 深色 - 用于文本 */
+    --light-color: #F7FFF7; /* 浅色 - 用于背景或对比文本 */
+    --shadow-color: rgba(0,0,0,0.15); /* 阴影颜色 */
+    --success-color: #4CAF50; /* 成功状态颜色 */
+    --success-color-rgb: 76, 175, 80;
+    --error-color: #FF5252; /* 错误状态颜色 */
+    --error-color-rgb: 255, 82, 82;
+    --warning-color: #FFC107; /* 警告状态颜色 */
+    --cloud-color: #FFFFFF;
+    --star-color: #FFD700;
+    --panel-bg-color: rgba(247, 255, 247, 0.97); /* 面板背景，增加一点透明度 */
+    --input-bg-color: rgba(255, 255, 255, 0.95);
+    --game-bg-gradient-start: #1e3c72;
+    --game-bg-gradient-end: #2a5298;
+    --tooltip-bg-color: rgba(0,0,0,0.75);
+    --mistake-item-border-color: #eee;
+    --button-secondary-bg: #757575;
+    --button-secondary-hover-bg: #5E5E5E;
+    /* 新增一个信息状态颜色，如果需要的话 */
+    --info-color: #2196F3; /* 例如蓝色 */
+    --info-color-rgb: 33, 150, 243;
+}
 
-    color: #0f0f0f;
-    background-color: #f6f6f6;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+body {
+    font-family: 'Comic Neue', 'Baloo 2', cursive; /* 将 Baloo 2 作为备选，Comic Neue 优先 */
+    background: linear-gradient(135deg, #FFECD2, #FCB69F); /* 温暖的背景渐变 */
+    color: var(--dark-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
 }
 
 .container {
-    margin: 0;
-    padding-top: 10vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.panel {
+    background: var(--panel-bg-color);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 10px 30px var(--shadow-color);
     text-align: center;
+    border: 3px solid var(--accent-color);
+    transition: all 0.3s ease;
 }
 
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: 0.75s;
+.main-panel {
+    animation: bounceIn 0.8s ease-out;
 }
 
-.logo.tauri:hover {
-    filter: drop-shadow(0 0 2em #24c8db);
+.initial-guidance {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(var(--accent-color-rgb), 0.2);
+    border-radius: 10px;
 }
 
-.row {
-    display: flex;
-    justify-content: center;
+.db-loading-indicator {
+    font-size: 1em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(var(--secondary-color-rgb), 0.1);
 }
 
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+
+@keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-a:hover {
-    color: #535bf2;
+h1, h2, h3 {
+    font-family: 'Baloo 2', cursive;
+    margin-bottom: 15px;
 }
 
 h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem); /* 响应式字体大小 */
+    color: var(--primary-color);
+    text-shadow: 3px 3px 0 var(--accent-color);
+    margin: 20px 0;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 35px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(200px, 65vw, 400px); /* 响应式下划线宽度 */
+    height: 4px;
+    background: var(--secondary-color);
+    border-radius: 2px;
+}
+
+.subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.selector-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.selector-box {
+    position: relative;
+    min-width: 150px;
+    flex: 1;
+    max-width: 200px;
+}
+
+.selector-label {
+    display: block;
+    padding: 14px 15px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
     text-align: center;
+    border: 2px solid var(--accent-color);
+    font-family: 'Baloo 2', cursive;
+    color: var(--dark-color);
+    box-shadow: 0 4px 10px var(--shadow-color);
+    position: relative; /* For ripple */
+    overflow: hidden; /* For ripple */
 }
 
-input,
-button {
+.selector-label::after { /* Ripple effect */
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(var(--primary-color-rgb), 0.4);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+.selector-label:hover::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0) translate(-50%, -50%);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+.selector-label:hover {
+    background: rgba(var(--secondary-color-rgb), 0.1);
+    border-color: var(--secondary-color);
+}
+
+.selector-options {
+    position: absolute;
+    top: calc(100% + 5px); /* Add a small gap */
+    left: 0;
+    width: 100%;
+    background: white;
     border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    color: #0f0f0f;
-    background-color: #ffffff;
-    transition: border-color 0.25s;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 100;
+    overflow: hidden;
+    border: 2px solid var(--primary-color);
+    max-height: 350px;
+    min-height: 100px; /* Ensure some minimum height */
+    overflow-y: auto;
+    transform-origin: top center;
+    transform: scaleY(0);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.2s ease-out;
 }
 
-button {
+.selector-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.selector-options::-webkit-scrollbar-track {
+    background: rgba(var(--dark-color-rgb, 0.05));
+    border-radius: 4px;
+}
+
+.selector-options::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.selector-option {
+    padding: 14px 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 16px;
+}
+
+.selector-option:last-child {
+    border-bottom: none;
+}
+
+.selector-option:hover, .selector-option:focus {
+    background: var(--secondary-color);
+    color: white;
+    transform: translateX(5px);
+}
+
+.selector-box.active .selector-options {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+.selector-box.active .selector-label {
+    background: rgba(var(--primary-color-rgb), 0.2);
+    border-color: var(--primary-color);
+}
+
+.file-upload-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.file-input-wrapper {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.file-input-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.file-input-label:hover, .file-input-label:focus {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.file-format-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    background: rgba(var(--accent-color-rgb), 0.15);
+    border-radius: 12px;
+    color: var(--dark-color);
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
+    line-height: 1.5;
+    text-align: center;
+    max-width: 240px;
+    margin: 0 5px;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-format-info div:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.file-upload-title {
+    font-family: 'Comic Neue', cursive;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    padding: 5px 15px;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    margin: 15px auto;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    font-weight: 700;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Comic Neue', 'Baloo 2', cursive;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+    line-height: 1.5; /* Ensure text is vertically centered better */
+}
+
+.btn:hover, .btn:focus {
+    background: var(--secondary-color);
+    transform: scale(1.05) rotate(1deg); /* Subtle rotation */
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-rgb), 0.4);
+    outline: none;
+}
+.btn:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+
+.btn:active {
+    transform: scale(1) rotate(0deg) translateY(1px); /* Pressed effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background-color: var(--button-secondary-bg);
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--button-secondary-hover-bg);
+    box-shadow: 0 6px 15px rgba(0,0,0, 0.3);
+}
+.btn-secondary:focus {
+    outline-color: var(--button-secondary-hover-bg);
+}
+
+
+#game-interface {
+    width: 100%;
+    max-width: 800px; /* Match panel width */
+    margin: 20px auto;
+}
+
+#game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.control-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    min-width: 80px;
+}
+
+#sound-button.sound-on {
+    /* background-color: var(--success-color); */
+}
+#sound-button.sound-off {
+    background-color: var(--error-color);
+    text-decoration: line-through;
+}
+#sound-button.sound-off:hover, #sound-button.sound-off:focus {
+    background-color: var(--error-color-rgb);
+}
+
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: clamp(350px, 60vh, 500px); /* Responsive height */
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--game-bg-gradient-start), var(--game-bg-gradient-end));
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(var(--accent-color-rgb), 0.3);
+    /* display: none; Initially hidden by #game-interface parent */
+}
+
+#pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+    font-size: 1.5em;
+}
+#pause-overlay p {
+    margin-bottom: 20px;
+    font-family: 'Baloo 2', cursive;
+}
+
+
+#game-progress {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    background: rgba(10, 61, 98, 0.8);
+    padding: 6px 12px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: var(--light-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 20;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    font-weight: bold;
+    background: rgba(10, 61, 98, 0.8);
+    padding: 6px 12px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: var(--accent-color);
+    font-family: 'Comic Neue', cursive;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+    z-index: 20;
+}
+
+.falling-word {
+    position: absolute;
+    font-size: clamp(1rem, 4vw, 1.5rem); /* Responsive font size for words */
+    font-weight: bold;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.8);
+    animation: fall linear forwards;
+    padding: 8px 15px;
+    background: rgba(44, 62, 80, 0.85); /* Slightly more opaque */
+    border-radius: 25px;
+    border: 2px solid var(--accent-color);
+    backdrop-filter: blur(3px); /* Stronger blur */
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    z-index: 10;
+    will-change: transform, opacity, top; /* Hint browser for optimizations */
+    contain: content;
+    user-select: none;
+}
+
+@keyframes fall {
+    from {
+        top: -60px; /* Start slightly higher */
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    10% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    to {
+        top: 100%;
+        opacity: 0.8; /* Keep some opacity when passing */
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+#input-container {
+    display: flex; /* Parent game-interface handles display:none */
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+input[type="text"] { /* More specific selector */
+    padding: 12px 20px;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 25px;
+    border: 2px solid transparent; /* Prepare for focus border */
+    background: var(--input-bg-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-family: 'Baloo 2', cursive;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.progress-container {
+    width: 80%;
+    margin: 25px auto;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px; /* Slightly thicker */
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 }
 
-button:hover {
-    border-color: #396cd8;
-}
-button:active {
-    border-color: #396cd8;
-    background-color: #e8e8e8;
+.difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px; /* Space for back button */
+    flex-wrap: wrap;
+    width: 100%;
 }
 
-input,
-button {
+.difficulty-btn {
+    min-width: 100px;
+    width: 100%;
+    max-width: 150px;
+    padding: 12px;
+}
+
+.difficulty-btn.easy { background: var(--success-color); color: white; }
+.difficulty-btn.medium { background: var(--accent-color); color: var(--dark-color); }
+.difficulty-btn.hard { background: var(--error-color); color: white; }
+
+.difficulty-btn.easy:hover, .difficulty-btn.easy:focus { background: darken(var(--success-color), 10%); }
+.difficulty-btn.medium:hover, .difficulty-btn.medium:focus { background: darken(var(--accent-color), 10%); }
+.difficulty-btn.hard:hover, .difficulty-btn.hard:focus { background: darken(var(--error-color), 10%); }
+
+
+.deco-cloud {
+    position: fixed;
+    background: var(--cloud-color);
+    border-radius: 50px;
+    opacity: 0.8;
+    animation: float 12s infinite ease-in-out; /* Slower, smoother animation */
+    z-index: -1; /* Ensure behind content */
+}
+
+.cloud-1 { width: 120px; height: 40px; top: 15%; left: -15%; animation-delay: 0s; }
+.cloud-2 { width: 150px; height: 50px; top: 35%; right: -18%; animation-delay: -4s; } /* Varied delays */
+.cloud-3 { width: 100px; height: 35px; top: 65%; left: -10%; animation-delay: -8s; }
+
+.deco-star {
+    position: fixed;
+    background: var(--star-color);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkle 2.5s infinite ease-in-out; /* Slightly slower twinkle */
+    z-index: -1;
+}
+
+.star-1 { width: 30px; height: 30px; top: 10%; right: 12%; animation-delay: -0.5s; }
+.star-2 { width: 20px; height: 20px; top: 70%; left: 8%; animation-delay: -1.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+    50% { transform: translateY(-20px) translateX(10px) scale(1.05); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+.feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /* Initial state for animation */
+    font-size: clamp(1.2rem, 5vw, 1.8rem); /* Adjusted feedback font size */
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 2000; /* Ensure on top of everything */
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    font-family: 'Baloo 2', cursive; /* Use Baloo for feedback */
+    text-align: center;
+    padding: 15px 25px; /* Adjusted padding */
+    border-radius: 15px;
+    will-change: transform, opacity;
+    display: flex; /* For aligning icon and text */
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    background-color: rgba(0,0,0,0.7); /* Default background for feedback */
+}
+.feedback-icon {
+    font-size: 1.5em; /* Icon slightly larger than text */
+}
+.feedback-text {
+    line-height: 1.3;
+}
+
+
+/* Dynamic classes for feedback type will be added via JS from showFeedback */
+.feedback.correct {
+    color: var(--light-color); /* Light text on colored background */
+    background-color: var(--success-color);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.feedback.error {
+    color: var(--light-color);
+    background-color: var(--error-color);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.feedback.info {
+    color: var(--light-color);
+    background-color: var(--info-color); /* Using the new info color */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.feedback.warning {
+    color: var(--dark-color); /* Dark text on light warning background */
+    background-color: var(--warning-color);
+    text-shadow: 0 1px 3px rgba(255,255,255,0.3);
+}
+
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 50;
+    animation: particle-fade 1s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+@keyframes particle-fade {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.word-tooltip {
+    position: absolute;
+    bottom: calc(100% + 5px); /* Small gap */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tooltip-bg-color);
+    color: var(--light-color);
+    padding: 3px 8px; /* Compact padding */
+    border-radius: 8px;
+    font-size: 0.8em; /* Smaller font */
+    white-space: nowrap;
+    z-index: 60; /* Above particles */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.combo-effect {
+    position: absolute;
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    color: var(--accent-color);
+    text-shadow: 0 0 8px var(--accent-color), 0 0 15px white; /* Enhanced shadow */
+    animation: comboPop 1s ease-out forwards;
+    z-index: 500;
+    pointer-events: none;
+    font-family: 'Baloo 2', cursive;
+    padding: 5px 10px;
+    background-color: rgba(var(--dark-color-rgb), 0.3);
+    border-radius: 10px;
+}
+
+@keyframes comboPop {
+    0% { transform: scale(0.5) translateY(20px); opacity: 0; }
+    30% { transform: scale(1.3) translateY(-10px); opacity: 1; }
+    70% { transform: scale(1.1) translateY(0px); opacity: 1; }
+    100% { transform: scale(1) translateY(5px); opacity: 0; }
+}
+
+.missed-word {
+    border: 2px solid var(--error-color) !important;
+    box-shadow: 0 0 10px var(--error-color) !important;
+    background-color: rgba(var(--error-color-rgb), 0.3) !important; /* Visual cue */
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Modal Styles (used for Mistake Book and WebDAV) */
+.modal {
+    display: none; /* Hidden by default, shown by JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1500; /* Below feedback but above most things */
+    /* display: flex; Use flex for centering, but still control display via JS */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none; /* Initially no interaction */
+}
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+    display: flex; /* Added this to make it visible when active */
+}
+
+
+.modal-content {
+    background: white;
+    padding: 25px; /* Slightly less padding */
+    border-radius: 15px;
+    max-width: 90%;
+    width: 550px; /* Slightly wider */
+    max-height: 85vh; /* More vertical space */
+    overflow-y: auto; /* Content itself will scroll if needed */
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+    display: flex; /* Added to help with internal layout */
+    flex-direction: column; /* Added */
+}
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+#mistake-list-container {
+    max-height: 55vh; /* Max height for the list itself */
+    overflow-y: auto;
+    margin: 20px 0;
+    padding-right: 10px; /* Space for scrollbar */
+    flex-grow: 1; /* Allow this to take available space */
+}
+
+
+#mistake-list {
+    text-align: left;
+}
+
+.mistake-item {
+    padding: 12px 10px; /* More padding */
+    border-bottom: 1px solid var(--mistake-item-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+.mistake-item:last-child {
+    border-bottom: none;
+}
+.mistake-item:hover {
+    background-color: rgba(var(--secondary-color-rgb), 0.05);
+}
+
+
+.mistake-item .word {
+    font-weight: bold;
+    color: var(--primary-color);
+    flex-basis: 45%; /* Allocate space */
+    margin-right: 10px;
+}
+
+.mistake-item .meaning {
+    color: var(--dark-color);
+    flex-basis: 45%; /* Allocate space */
+    font-size: 0.95em;
+}
+
+.mistake-modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around; /* Space out buttons */
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.mistake-modal-actions .btn {
+    flex-grow: 1; /* Allow buttons to grow */
+    min-width: 150px; /* Minimum width for buttons */
+}
+
+.btn-practice-mistakes { background-color: var(--success-color); }
+.btn-practice-mistakes:hover, .btn-practice-mistakes:focus { background-color: darken(var(--success-color), 10%); }
+.btn-clear-mistakes { background-color: var(--error-color); }
+.btn-clear-mistakes:hover, .btn-clear-mistakes:focus { background-color: darken(var(--error-color), 10%); }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    #game-container {
+        height: clamp(300px, 55vh, 450px);
+        margin: 10px 0;
+    }
+
+    .panel {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .selector-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .selector-box {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .selector-options {
+        max-height: 250px; /* Adjust for smaller screens */
+        min-height: auto;
+    }
+
+    .btn, .file-input-label, input[type="text"] {
+        width: 100%;
+        max-width: none;
+        font-size: clamp(0.85rem, 3.8vw, 1rem); /* Adjust font size */
+    }
+    .btn {
+        padding: 12px 15px; /* Adjust padding for buttons */
+    }
+
+
+    .difficulty-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .difficulty-btn {
+        max-width: none;
+    }
+
+    .file-upload-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .file-input-wrapper,
+    .file-format-info,
+    .file-upload-row .btn { /* Target button in this row specifically if needed */
+        width: 100%;
+        max-width: none;
+    }
+
+    .file-format-info {
+        margin: 8px 0;
+        max-width: none;
+    }
+
+    .progress-container {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px; /* Adjust padding */
+        max-height: 90vh;
+        overflow-y: auto; /* Ensure modal content can scroll */
+    }
+    #mistake-list-container {
+        max-height: 60vh;
+    }
+    .mistake-modal-actions {
+        flex-direction: column; /* Stack buttons on small screens */
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) { /* Specific for low-height landscape */
+    .container {
+        padding: 5px;
+    }
+     h1 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        margin: 10px 0 20px 0;
+    }
+    .panel {
+        padding: 15px;
+        margin: 10px auto;
+    }
+    #game-container {
+        height: clamp(250px, 70vh, 350px); /* Adjust height for landscape */
+    }
+    .falling-word {
+        font-size: clamp(0.9rem, 3vh, 1.2rem); /* Adjust word size for landscape */
+    }
+    .selector-options {
+        min-height: auto;
+        max-height: 150px; /* Limit dropdown height in landscape */
+    }
+    .modal-content {
+        max-height: 90vh;
+        padding: 15px;
+        overflow-y: auto; /* Ensure modal content can scroll */
+    }
+    #mistake-list-container {
+        max-height: 65vh;
+    }
+}
+
+@media (max-width: 480px) { /* Extra small screens */
+    h1 {
+        font-size: clamp(1.8rem, 7vw, 2.2rem);
+    }
+    .subtitle {
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    }
+    #game-container {
+        height: clamp(280px, 50vh, 400px);
+    }
+
+    .btn, .file-input-label {
+        padding: 10px 15px;
+    }
+
+    #score, #game-progress {
+        font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+        padding: 5px 10px;
+    }
+    .falling-word {
+        font-size: clamp(0.9rem, 3.8vw, 1.1rem);
+    }
+    input[type="text"]{
+        font-size: clamp(0.9rem, 3.8vw, 1rem);
+    }
+}
+
+/* Focus styles for accessibility */
+.btn:focus-visible,
+input[type="file"]:focus-visible + .file-input-label,
+input[type="text"]:focus-visible,
+.selector-label:focus-visible,
+.selector-option:focus-visible,
+.control-btn:focus-visible {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(var(--secondary-color-rgb), 0.5);
+}
+/* Fallback for browsers that don't support focus-visible but do support focus */
+.btn:focus,
+input[type="file"]:focus + .file-input-label,
+input[type="text"]:focus,
+.selector-label:focus,
+.selector-option:focus,
+.control-btn:focus {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(var(--secondary-color-rgb), 0.5);
+}
+/* Ensure no double outline if :focus-visible is supported */
+.btn:focus:not(:focus-visible),
+input[type="file"]:focus:not(:focus-visible) + .file-input-label,
+input[type="text"]:focus:not(:focus-visible),
+.selector-label:focus:not(:focus-visible),
+.selector-option:focus:not(:focus-visible),
+.control-btn:focus:not(:focus-visible) {
     outline: none;
+    box-shadow: initial; /* Or specific hover/active shadow if needed */
+}
+/* Re-apply hover styles for elements that also have focus if needed */
+.btn:hover, .btn:focus {
+    background: var(--secondary-color);
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-rgb), 0.4);
+}
+.file-input-label:hover, .file-input-label:focus {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+input[type="text"]:focus {
+    border-color: var(--primary-color); /* Keep this border color for input focus specifically */
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3); /* And this specific shadow */
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--button-secondary-hover-bg);
+    box-shadow: 0 6px 15px rgba(0,0,0, 0.3);
 }
 
-#greet-input {
-    margin-right: 5px;
+/* --- STYLES FOR WebDAV MODAL --- */
+
+#webdav-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+    margin-bottom: 15px;
+    width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        color: #f6f6f6;
-        background-color: #2f2f2f;
-    }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
-    a:hover {
-        color: #24c8db;
-    }
+.form-group label {
+    font-weight: bold;
+    color: var(--dark-color);
+    font-size: 0.9em;
+}
 
-    input,
-    button {
-        color: #ffffff;
-        background-color: #0f0f0f98;
+#webdav-form input[type="url"],
+#webdav-form input[type="text"],
+#webdav-form input[type="password"] {
+    padding: 10px 15px;
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: var(--input-bg-color);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Baloo 2', cursive;
+}
+
+#webdav-form input[type="url"]:focus,
+#webdav-form input[type="text"]:focus,
+#webdav-form input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06), 0 0 0 2px rgba(var(--primary-color-rgb), 0.3);
+}
+
+#webdav-status {
+    margin-top: 10px;
+    font-size: 0.9em;
+    min-height: 2.4em; /* Allow for two lines of text */
+    line-height: 1.2em;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    word-break: break-all; /* Prevent long error messages from breaking layout */
+}
+#webdav-status.success {
+    color: var(--success-color);
+    background-color: rgba(var(--success-color-rgb), 0.1);
+}
+#webdav-status.error {
+    color: var(--error-color);
+    background-color: rgba(var(--error-color-rgb), 0.1);
+}
+#webdav-status.info {
+    color: var(--dark-color); /* Or var(--info-color) if you prefer blue text */
+    background-color: rgba(var(--accent-color-rgb), 0.15); /* Or a light blue for info */
+}
+
+
+.webdav-modal-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.webdav-modal-actions .btn {
+    flex-grow: 1;
+    min-width: 120px; /* Adjusted based on number of buttons */
+    padding: 8px 10px; /* Slightly reduced padding for more buttons */
+    font-size: clamp(0.8rem, 3.2vw, 0.85rem); /* Slightly smaller font */
+}
+
+.webdav-modal-actions .btn-success {
+    background-color: var(--success-color);
+}
+.webdav-modal-actions .btn-success:hover,
+.webdav-modal-actions .btn-success:focus {
+    background-color: darken(var(--success-color), 10%);
+     box-shadow: 0 6px 15px rgba(var(--success-color-rgb), 0.4);
+}
+
+.webdav-modal-actions .btn-danger {
+    background-color: var(--error-color);
+}
+.webdav-modal-actions .btn-danger:hover,
+.webdav-modal-actions .btn-danger:focus {
+    background-color: darken(var(--error-color), 10%);
+    box-shadow: 0 6px 15px rgba(var(--error-color-rgb), 0.4);
+}
+
+.webdav-modal-actions .btn-info {
+    background-color: var(--info-color); /* Using the new info color */
+    color: white; /* Ensure text is readable on blue */
+}
+.webdav-modal-actions .btn-info:hover,
+.webdav-modal-actions .btn-info:focus {
+    background-color: darken(var(--info-color), 10%);
+    box-shadow: 0 6px 15px rgba(var(--info-color-rgb), 0.4);
+}
+
+
+@media (max-width: 480px) {
+    .webdav-modal-actions .btn {
+        min-width: 100px;
+        font-size: 0.75rem;
     }
-    button:active {
-        background-color: #0f0f0f69;
+    .modal-content {
+      overflow-y: auto;
     }
 }
+
+/* --- END OF STYLES FOR WebDAV MODAL --- */
+
+
+
+/* --- STYLES FOR WebDAV MODAL (continued/updated) --- */
+
+#webdav-backup-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#webdav-backup-list li {
+    padding: 8px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+    border-radius: 3px;
+    margin-bottom: 3px;
+}
+#webdav-backup-list li:last-child {
+    border-bottom: none;
+}
+#webdav-backup-list li:hover {
+    background-color: #e9e9e9;
+}
+#webdav-backup-list li.selected {
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.sync-options-group div {
+    margin-bottom: 8px;
+}
+.sync-options-group label {
+    margin-left: 5px;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+.sync-options-group input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+/* --- END OF UPDATED STYLES FOR WebDAV MODAL --- */
